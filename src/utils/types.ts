@@ -160,7 +160,7 @@ export type TeamContactData = {
   }[];
 };
 
-type PersonalData = {
+export type PersonalData = {
   fullName: string;
   position: string;
   email: string;

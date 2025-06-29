@@ -6,18 +6,22 @@ import { GetServerSideProps } from 'next';
 import { TeamApiResponse } from '@utils/types';
 import { fetchData } from 'lib/api';
 
+import { MemberCard } from '../../../components/CardComponent';
+
 interface TeamPageProps {
   team: TeamApiResponse;
 }
 
 const TeamLeadershipPage = ({ team }: TeamPageProps) => {
   const { membersByType } = team;
+  const member = membersByType.directors[0];
   return (
     <div>
       {membersByType.directors.map((director) => (
         <span key={director.fullName}>{director.fullName}</span>
       ))}
       <Typography variant="h4">Welcome to the TeamPage</Typography>
+      <MemberCard member={member} role="Director" />
     </div>
   );
 };
