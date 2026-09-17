@@ -2,10 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Alert,
   Box,
-  Breadcrumbs,
   Button,
   Container,
-  Link,
   Paper,
   Stack,
   Typography,
@@ -16,6 +14,7 @@ import NextLink from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, UseFormReturn, useForm } from 'react-hook-form';
 
+import { BreadCrumbsDynamic } from '@components';
 import {
   adhocMenteeFormDefaultValues,
   menteeFormDefaultValues,
@@ -67,6 +66,7 @@ const validateStep1 = async (formMethods: UseFormReturn<MenteeFormData>) =>
     'position',
     'companyName',
     'linkedInProfile',
+    'availableHsMonth',
   ]);
 
 const validateStep2 = async (formMethods: UseFormReturn<MenteeFormData>) =>
@@ -143,6 +143,11 @@ const MenteeRegistrationPage = () => {
     }
   };
 
+  const onInvalid = () => {
+    setSubmitError('Please fix the highlighted errors before submission.');
+    window.scrollTo(0, 0);
+  };
+
   const onSubmit = async (data: MenteeFormData) => {
     setSubmitError(null);
 
@@ -193,26 +198,7 @@ const MenteeRegistrationPage = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          backgroundColor: 'white',
-          py: 2,
-          px: { xs: 2, sm: 3, md: '157px' },
-        }}
-      >
-        <Breadcrumbs>
-          <Link href="/" color="primary" underline="always">
-            Home
-          </Link>
-          <Link href="/mentorship" color="primary" underline="always">
-            Mentorship
-          </Link>
-          <Typography color="text.primary">
-            {isAdhoc ? 'Ad-hoc Mentee Registration' : 'Mentee Registration'}
-          </Typography>
-        </Breadcrumbs>
-      </Box>
-
+      <BreadCrumbsDynamic />
       <FormProvider {...formMethods}>
         <Box
           sx={{
@@ -370,7 +356,7 @@ const MenteeRegistrationPage = () => {
                         variant="contained"
                         color="success"
                         disabled={formMethods.formState.isSubmitting}
-                        onClick={formMethods.handleSubmit(onSubmit)}
+                        onClick={formMethods.handleSubmit(onSubmit, onInvalid)}
                         sx={{ px: { xs: 2.5, md: 3.5 }, py: 1 }}
                       >
                         {formMethods.formState.isSubmitting
